@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,7 +9,7 @@ public class FizzBuzz {
     public static void main(String[] args) {
 
         for(int i = 1; i <= 300; i++) {
-            List<String> words = new LinkedList<>();
+            List<String> words = new ArrayList<>();
 
             if(i % 3 == 0) words.add("Fizz");
 
@@ -23,6 +25,8 @@ public class FizzBuzz {
                              .filter((word)-> word != "Fizz" && word != "Buzz" && word != "Bang")
                              .collect(Collectors.toList());
             }
+
+            if(i % 17 == 0) Collections.reverse(words);
 
 
             if(words.isEmpty()) {
