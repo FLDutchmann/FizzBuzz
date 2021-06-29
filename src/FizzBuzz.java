@@ -12,6 +12,7 @@ public class FizzBuzz {
             basicRules.add(new BasicRule(13, "Fezz"));
             basicRules.add(new BasicRule(5, "Buzz"));
             basicRules.add(new BasicRule(7, "Bang"));
+            basicRules.add(new BasicRule(11, "Bong"));
 
             List<String> words = new ArrayList<>();
 
@@ -19,14 +20,10 @@ public class FizzBuzz {
                 addWordIfDivisible(i, rule.divisor, rule.word, words);
             }
 
-            if(i % 11 == 0) {
-                words.add("Bong");
-                words = words.stream()
-                             .filter((word)-> !word.equals("Fizz") && !word.equals("Buzz") && !word.equals("Bang"))
-                             .collect(Collectors.toList());
-            }
+            //We'll forego creating arrays of the following rules
+            words = removeWordsIfDivisible(i, 11, List.of("Fizz", "Buzz", "Bang"), words);
 
-            if(i % 17 == 0) Collections.reverse(words);
+            reverseIfDivisible(i, 17, words);
 
 
             if(words.isEmpty()) {
@@ -40,6 +37,18 @@ public class FizzBuzz {
 
     public static void addWordIfDivisible(int iterator, int divisor, String word, List<String> words){
         if(iterator % divisor == 0) words.add(word);
+    }
+
+    public static List<String> removeWordsIfDivisible(int iterator, int divisor, List<String> wordsToRemove, List<String> words) {
+        if(iterator % divisor == 0)
+            return words.stream()
+                         .filter((word)-> !wordsToRemove.contains(word))
+                         .collect(Collectors.toList());
+        else return words;
+    }
+
+    public static void reverseIfDivisible(int iterator, int divisor, List<String> words) {
+        if(iterator % divisor == 0) Collections.reverse(words);
     }
 
     private static class BasicRule {
