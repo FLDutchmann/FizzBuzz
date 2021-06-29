@@ -1,30 +1,29 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class FizzBuzz {
+    private static List<BasicRule> basicRules = List.of(
+            new BasicRule(3, "Fizz"),
+            new BasicRule(13, "Fezz"),
+            new BasicRule(5, "Buzz"),
+            new BasicRule(7, "Bang"),
+            new BasicRule(11, "Bong")
+    );
+
     public static void main(String[] args) {
-        for(int i = 1; i <= 300; i++) {
-            List<BasicRule> basicRules = new ArrayList<>();
-            basicRules.add(new BasicRule(3, "Fizz"));
-            basicRules.add(new BasicRule(13, "Fezz"));
-            basicRules.add(new BasicRule(5, "Buzz"));
-            basicRules.add(new BasicRule(7, "Bang"));
-            basicRules.add(new BasicRule(11, "Bong"));
+        int limit = promptUserForLimit();
+
+        for(int i = 1; i <= limit; i++) {
 
             List<String> words = new ArrayList<>();
 
             for(BasicRule rule: basicRules) {
                 addWordIfDivisible(i, rule.divisor, rule.word, words);
             }
-
             //We'll forego creating arrays of the following rules
             words = removeWordsIfDivisible(i, 11, List.of("Fizz", "Buzz", "Bang"), words);
 
             reverseIfDivisible(i, 17, words);
-
 
             if(words.isEmpty()) {
                 System.out.print(i);
@@ -33,6 +32,14 @@ public class FizzBuzz {
             }
             System.out.println();
         }
+    }
+
+    private static int promptUserForLimit() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Up to what number should we FizzBuzz?");
+
+        int max = scanner.nextInt();
+        return max;
     }
 
     public static void addWordIfDivisible(int iterator, int divisor, String word, List<String> words){
