@@ -2,28 +2,25 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class FizzBuzz {
-    private static List<Rule> addWordRules = List.of(
+    private static List<Rule> rules = List.of(
             new AddWordRule(3, "Fizz"),
             new AddWordRule(13, "Fezz"),
             new AddWordRule(5, "Buzz"),
             new AddWordRule(7, "Bang"),
             new AddWordRule(11, "Bong"),
-            new RemoveWordsRule(11,  List.of("Fizz", "Buzz", "Bang"))
+            new RemoveWordsRule(11,  List.of("Fizz", "Buzz", "Bang")),
+            new ReverseWordsRule(17)
     );
 
     public static void main(String[] args) {
         int limit = promptUserForLimit();
 
         for(int i = 1; i <= limit; i++) {
-
             List<String> words = new ArrayList<>();
 
-            for(Rule rule: addWordRules) {
+            for(Rule rule: rules) {
                 words = rule.execute(i, words);
             }
-            //We'll forego creating arrays of the following rules\
-
-            reverseIfDivisible(i, 17, words);
 
             if(words.isEmpty()) {
                 System.out.print(i);
@@ -40,20 +37,6 @@ public class FizzBuzz {
 
         int max = scanner.nextInt();
         return max;
-    }
-
-
-    public static List<String> removeWordsIfDivisible(int iterator, int divisor, List<String> wordsToRemove, List<String> words) {
-        if(iterator % divisor == 0)
-            return words.stream()
-                         .filter((word)-> !wordsToRemove.contains(word))
-                         .collect(Collectors.toList());
-        else return words;
-    }
-
-    public static List<String> reverseIfDivisible(int iterator, int divisor, List<String> words) {
-        if(iterator % divisor == 0) Collections.reverse(words);
-        return words;
     }
 
     private interface Rule {
@@ -92,5 +75,20 @@ public class FizzBuzz {
                         .collect(Collectors.toList());
             else return words;
         }
+    }
+
+    private static class ReverseWordsRule implements Rule {
+        public int divisor;
+
+        ReverseWordsRule(int divisor) {
+            this.divisor = divisor;
+        }
+
+
+        public List<String> execute(int iterator, List<String> words) {
+            if(iterator % divisor == 0) Collections.reverse(words);
+            return words;
+        }
+
     }
 }
